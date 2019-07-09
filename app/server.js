@@ -1,5 +1,4 @@
 // DEPENDENCIES
-var path = require("path");
 var express = require("express");
 
 // tells node that we are creating an "express" server
