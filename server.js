@@ -15,8 +15,8 @@ app.use(express.static("public"));
 
 // ROUTER
 // Points server to series of "route" files
-require("./routing/apiRoutes")(app);
-require("./routing/htmlRoutes")(app);
+require("./app/routing/apiRoutes")(app);
+require("./app/routing/htmlRoutes")(app);
 
 // LISTENER
 // starts the server
