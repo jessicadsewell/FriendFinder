@@ -188,19 +188,7 @@
 
     $("#submit").on("click", function (event) {
         event.preventDefault();
-        // var scoreArray = [];
-
-        // $.each($(".chosen-select option:selected"), function () {
-        //     scoreArray.push($(this).val());
-        // });
-        // alert("You have selected these answers - " + scoreArray.join(", "));
-
-        // var userData = {
-        //     userName: $("#name").val().trim(),
-        //     photo: $("#photo").val().trim(),
-        //     scores: scoreArray
-        // };
-        // Form validation
+        
         var valid = true;
 
         if ($("#name").val() === "" || $("#photo").val() === "") {
@@ -225,29 +213,21 @@
                     $("#q10").val()
                 ]
             }
-            $.ajax("/api/friends", {
-                type: "POST",
-                data: newUser //req.body on the backend 
-            }).then(
-                function () {
-                    console.log(newUser);
-                    // Reload the page to get the updated list
-                    $("#bestFriend").text(newUser.name);
-                    $("#bestFriendPhoto").attr("src", newUser.photo);
-                    $("#bestFriendModal").modal("show");
-                }
-                );
-            } else {
-                alert("Please fill out all fields before submitting!")
-            }
-            
-            
-        // Clear the form when submitting
-        // $("#name").val("");
-        // $("#photo").val("");
-        // $(".chosen-select").val("");
+            $.post("/api/friends", newUser).done(function (data) {
+                console.log("response = " + JSON.stringify(data));
+                // Reload the page to get the updated list
+                $("#bestFriend").text(data.name);
+                $("#bestFriendPhoto").attr("src", data.photo);
+                $("#bestFriendModal").modal("show");
+            });
 
+
+            // Clear the form when submitting
+            // $("#name").val("");
+            // $("#photo").val("");
+            // $(".chosen-select").val("");
+
+        };
     });
-
 
 </script>

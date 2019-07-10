@@ -3,16 +3,17 @@ var friends = require("../data/friends");
 // ROUTING 
 
 module.exports = function(app) {
+
     app.get("/api/friends", function (req, res) {
         res.json(friends);
     })
-
+    
     app.post("/api/friends", function (req, res) {
         console.log(req.body.scores);
 
         var user = req.body;
 
-        for (var i = 0; i < user.scores.length; i++) {
+        for (var i = 0; i < user.scores.length; i++) { // attempt -1???
             user.scores[i] = parseInt(user.scores[i]);
         }
 
@@ -39,7 +40,7 @@ module.exports = function(app) {
         res.json(friends[bestFriendIndex]);
 
         console.log("Best friend index: " + bestFriendIndex);
-        console.log("Friends" + friends);
+        console.log("Friends" + friends[i]);
     })
 
     // app.post("/api/clear", function (req, res) {
