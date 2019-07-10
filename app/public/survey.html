@@ -159,33 +159,27 @@
                 aria-hidden="true"></i>
             Submit</button>
 
-        <hr>
-        <footer class="footer">
-            <div class="container">
-                <p><a href="/api/friends">API Friends List</a> | <a
-                        href="https://github.com/afhaque/friendfinder">GitHub Repo</a></p>
-            </div>
-        </footer>
-
     </div>
-    <div class="modal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
+    <div id="bestFriendModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title">We've found a match:</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title">Your New Best Friend</h1>
                 </div>
                 <div class="modal-body">
-                  <p>Info goes here</p>
+                    <h2 id="bestFriend"></h2>
+                    <img id="bestFriendPhoto" src="#">
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
-              </div>
             </div>
-          </div>
+        </div>
+    </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 </body>
 
 </html>
@@ -194,39 +188,64 @@
 
     $("#submit").on("click", function (event) {
         event.preventDefault();
+        // var scoreArray = [];
 
-        var scoreArray = [];
-        
-        $.each($(".chosen-select option:selected"), function(){            
-            scoreArray.push($(this).val());
-        });
-        alert("You have selected these answers - " + scoreArray.join(", "));
-    
+        // $.each($(".chosen-select option:selected"), function () {
+        //     scoreArray.push($(this).val());
+        // });
+        // alert("You have selected these answers - " + scoreArray.join(", "));
 
-        var userData = {
-            userName: $("#name").val().trim(),
-            photo: $("#photo").val().trim(),
-            scores: scoreArray
-        };
+        // var userData = {
+        //     userName: $("#name").val().trim(),
+        //     photo: $("#photo").val().trim(),
+        //     scores: scoreArray
+        // };
+        // Form validation
+        var valid = true;
 
-        console.log(userData);
-
-        $.post("/api/friends", userData, function (data) {
-            if (data) {
-                alert("Matching you to someone similar...");
+        if ($("#name").val() === "" || $("#photo").val() === "") {
+            valid = false;
+        } else if ($("#q1").val() === "empty" || $("#q2").val() === "empty" || $("#q3").val() === "empty" || $("#q4").val() === "empty" || $("#q5").val() === "empty" || $("#q6").val() === "empty" || $("#q7").val() === "empty" || $("#q8").val() === "empty" || $("#q9").val() === "empty" || $("#q10").val() === "empty") {
+            valid = false;
+        }
+        if (valid === true) {
+            var newUser = {
+                name: $("#name").val().trim(),
+                photo: $("#photo").val().trim(),
+                scores: [
+                    $("#q1").val(),
+                    $("#q2").val(),
+                    $("#q3").val(),
+                    $("#q4").val(),
+                    $("#q5").val(),
+                    $("#q6").val(),
+                    $("#q7").val(),
+                    $("#q8").val(),
+                    $("#q9").val(),
+                    $("#q10").val()
+                ]
             }
+            $.ajax("/api/friends", {
+                type: "POST",
+                data: newUser //req.body on the backend 
+            }).then(
+                function () {
+                    $("#bestFriend").text(newUser.name);
+                    $("#bestFriendPhoto").attr("src", newUser.photo);
+                    $("#bestFriendModal").modal("toggle");
+                }
+            );
+        } else {
+            alert("Please fill out all fields before submitting!")
+        }
 
-            else {
-                alert("Please fill out all fields before submitting!")
-            }
 
-            // Clear the form when submitting
-            $("#name").val("");
-            $("#photo").val("");
-            $(".chosen-select").val("");
-        });
+        // Clear the form when submitting
+        // $("#name").val("");
+        // $("#photo").val("");
+        // $(".chosen-select").val("");
 
     });
 
-            
+
 </script>
