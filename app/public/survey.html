@@ -177,9 +177,9 @@
             </div>
         </div>
     </div>
-    </div>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
 
 </html>
@@ -230,16 +230,18 @@
                 data: newUser //req.body on the backend 
             }).then(
                 function () {
+                    console.log(newUser);
+                    // Reload the page to get the updated list
                     $("#bestFriend").text(newUser.name);
                     $("#bestFriendPhoto").attr("src", newUser.photo);
-                    $("#bestFriendModal").modal("toggle");
+                    $("#bestFriendModal").modal("show");
                 }
-            );
-        } else {
-            alert("Please fill out all fields before submitting!")
-        }
-
-
+                );
+            } else {
+                alert("Please fill out all fields before submitting!")
+            }
+            
+            
         // Clear the form when submitting
         // $("#name").val("");
         // $("#photo").val("");

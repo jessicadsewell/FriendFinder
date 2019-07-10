@@ -2,8 +2,8 @@ var friends = require("../data/friends");
 
 // ROUTING 
 
-module.exports = function (app) {
-    app.get("api/friends", function (req, res) {
+module.exports = function(app) {
+    app.get("/api/friends", function (req, res) {
         res.json(friends);
     })
 
@@ -37,6 +37,9 @@ module.exports = function (app) {
 
         friends.push(user);
         res.json(friends[bestFriendIndex]);
+
+        console.log("Best friend index: " + bestFriendIndex);
+        console.log("Friends" + friends);
     })
 
     // app.post("/api/clear", function (req, res) {
