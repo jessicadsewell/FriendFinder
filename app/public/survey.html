@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>FriendFinder</title>
 
-    <!-- Latest compiled and minified CSS & JS -->
+    <!-- Latest compiled and minified JS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -15,7 +15,23 @@
 
     <!-- Chosen -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.css">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.jquery.min.js"></script>
+    <style>
+        img {
+            vertical-align: middle;
+            width: 350px;
+            height: auto;
+        }
+
+        body {
+            background-color: cadetblue;
+        }
+
+        .btn-block {
+            background-color: darkslategray;
+        }
+    </style>
 
 </head>
 
@@ -36,7 +52,7 @@
         <hr>
 
         <h3><strong>Question 1</strong></h3>
-        <h4>Your mind is always buzzing with unexplored ideas and plans.</h4>
+        <h4>You believe a hot dog is a sandwich.</h4>
         <select class="chosen-select" id="q1">
             <option value=""></option>
             <option value="1">1 (Strongly Disagree)</option>
@@ -47,7 +63,7 @@
         </select>
 
         <h3><strong>Question 2</strong></h3>
-        <h4>Generally speaking, you rely more on your experience than your imagination.</h4>
+        <h4>You believe being late is acceptable.</h4>
         <select class="chosen-select" id="q2">
             <option value=""></option>
             <option value="1">1 (Strongly Disagree)</option>
@@ -59,7 +75,7 @@
 
 
         <h3><strong>Question 3</strong></h3>
-        <h4>You find it easy to stay relaxed and focused even when there is some pressure.</h4>
+        <h4>You spend weekends socializing with friends and family.</h4>
         <select class="chosen-select" id="q3">
             <option value=""></option>
             <option value="1">1 (Strongly Disagree)</option>
@@ -71,7 +87,7 @@
 
 
         <h3><strong>Question 4</strong></h3>
-        <h4>You rarely do something just out of sheer curiosity.</h4>
+        <h4>You believe one drink a day is normal.</h4>
         <select class="chosen-select" id="q4">
             <option value=""></option>
             <option value="1">1 (Strongly Disagree)</option>
@@ -83,7 +99,7 @@
 
 
         <h3><strong>Question 5</strong></h3>
-        <h4>People can rarely upset you.</h4>
+        <h4>You think Hermione should have ended up with Harry.</h4>
         <select class="chosen-select" id="q5">
             <option value=""></option>
             <option value="1">1 (Strongly Disagree)</option>
@@ -95,7 +111,7 @@
 
 
         <h3><strong>Question 6</strong></h3>
-        <h4>It is often difficult for you to relate to other people’s feelings.</h4>
+        <h4>You believe 3D is unnecessary.</h4>
         <select class="chosen-select" id="q6">
             <option value=""></option>
             <option value="1">1 (Strongly Disagree)</option>
@@ -107,7 +123,7 @@
 
 
         <h3><strong>Question 7</strong></h3>
-        <h4>In a discussion, truth should be more important than people’s sensitivities.</h4>
+        <h4>You think Jack could have fit on the door with Rose in Titanic.</h4>
         <select class="chosen-select" id="q7">
             <option value=""></option>
             <option value="1">1 (Strongly Disagree)</option>
@@ -118,7 +134,7 @@
         </select>
 
         <h3><strong>Question 8</strong></h3>
-        <h4>You rarely get carried away by fantasies and ideas.</h4>
+        <h4>You believe dodgeball was the best PE game.</h4>
         <select class="chosen-select" id="q8">
             <option value=""></option>
             <option value="1">1 (Strongly Disagree)</option>
@@ -129,8 +145,7 @@
         </select>
 
         <h3><strong>Question 9</strong></h3>
-        <h4>You think that everyone’s views should be respected regardless of whether they are supported by facts or
-            not.</h4>
+        <h4>You think Sean Connery was the best 007.</h4>
         <select class="chosen-select" id="q9">
             <option value=""></option>
             <option value="1">1 (Strongly Disagree)</option>
@@ -141,7 +156,7 @@
         </select>
 
         <h3><strong>Question 10</strong></h3>
-        <h4>You feel more energetic after spending time with a group of people.</h4>
+        <h4>You welcome political debates.</h4>
         <select class="chosen-select" id="q10">
             <option value=""></option>
             <option value="1">1 (Strongly Disagree)</option>
@@ -172,7 +187,7 @@
                     <img id="bestFriendPhoto" src="#">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" id="close" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -188,7 +203,7 @@
 
     $("#submit").on("click", function (event) {
         event.preventDefault();
-        
+
         var valid = true;
 
         if ($("#name").val() === "" || $("#photo").val() === "") {
@@ -216,18 +231,19 @@
             $.post("/api/friends", newUser).done(function (data) {
                 console.log("response = " + JSON.stringify(data));
                 // Reload the page to get the updated list
-                $("#bestFriend").text(data.name);
-                $("#bestFriendPhoto").attr("src", data.photo);
+                $("#bestFriend").text(data.matchName);
+                $("#bestFriendPhoto").attr("src", data.matchImage);
                 $("#bestFriendModal").modal("show");
             });
+        } else {
+			// If a required field is missing, show alert
+			alert("Survey is incomplete!");
+		}
 
-
-            // Clear the form when submitting
-            // $("#name").val("");
-            // $("#photo").val("");
-            // $(".chosen-select").val("");
-
-        };
     });
+
+    $("#close").on("click", function () {
+        location.reload();
+    })
 
 </script>
